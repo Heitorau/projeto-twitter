@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>H</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #e7e9ea;
+  font-family: Arial, sans-serif;
+}
+
+.authScreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.authBox {
+  width: 100%;
+  max-width: 420px;
+  background: #000;
+  border: 1px solid #2f3336;
+  border-radius: 24px;
+  padding: 35px;
+}
+
+.authLogo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  color: white;
+  font-size: 38px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.authBox h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.authBox p {
+  color: #71767b;
+  margin-bottom: 25px;
+}
+
+.authInput {
+  width: 100%;
+  background: #000;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  outline: none;
+  font-size: 16px;
+}
+
+.authInput:focus {
+  border-color: #1d9bf0;
+}
+
+.authBtn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  margin-top: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.authBtn.primary {
+  background: #1d9bf0;
+  color: white;
+}
+
+.authBtn.secondary {
+  background: white;
+  color: black;
+}
+
+.authBtn.back {
+  background: transparent;
+  color: white;
+  border: 1px solid #2f3336;
+}
+
+.authBtn.back:hover {
+  background: #181818;
+}
+
+.authStatus {
+  margin-top: 15px;
+  color: #71767b;
+  font-size: 14px;
+  text-align: center;
+}
+
+.app {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 260px 1fr 330px;
+}
+
+.sidebar {
+  height: 100vh;
+  padding: 20px;
+  border-right: 1px solid #2f3336;
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  color: white;
+  font-size: 34px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.navItem {
+  padding: 14px;
+  border-radius: 30px;
+  font-size: 21px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.navItem:hover {
+  background: #181818;
+}
+
+.notificationDot {
+  display: none;
+  width: 10px;
+  height: 10px;
+  background: #f4212e;
+  border-radius: 50%;
+  position: absolute;
+  top: 13px;
+  left: 34px;
+  border: 2px solid #000;
+}
+
+.tweetBtn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 30px;
+  background: #1d9bf0;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logoutBtn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid #2f3336;
+  border-radius: 25px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background: #181818;
+}
+
+.main {
+  min-height: 100vh;
+  border-right: 1px solid #2f3336;
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.top h2 {
+  font-size: 22px;
+}
+
+.postBox {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.avatar img,
+.profileAvatar img,
+.authLogo img,
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.formArea {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 90px;
+  resize: none;
+  background: #000;
+  color: white;
+  border: none;
+  outline: none;
+  font-size: 19px;
+}
+
+.fileLabel {
+  display: inline-block;
+  margin-top: 10px;
+  color: #1d9bf0;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.fileLabel:hover {
+  background: #031018;
+}
+
+#mediaFile {
+  display: none;
+}
+
+.previewBox img,
+.previewBox video {
+  max-width: 100%;
+  border-radius: 18px;
+  border: 1px solid #2f3336;
+  margin-top: 10px;
+}
+
+.actions {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #2f3336;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconsPost {
+  color: #1d9bf0;
+  font-size: 20px;
+}
+
+.actions button {
+  background: #1d9bf0;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sectionTitle {
+  padding: 12px 15px;
+  border-bottom: 1px solid #2f3336;
+  color: #71767b;
+  font-size: 15px;
+}
+
+.post {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.post:hover {
+  background: #080808;
+}
+
+.postBody {
+  width: 100%;
+}
+
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.user {
+  font-weight: bold;
+}
+
+.nick {
+  color: #71767b;
+}
+
+.followBtn {
+  background: white;
+  color: black;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.followBtn.following {
+  background: transparent;
+  color: white;
+  border: 1px solid #2f3336;
+}
+
+.postText {
+  margin: 8px 0;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post img,
+.post video,
+.post iframe {
+  max-width: 100%;
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid #2f3336;
+  margin-top: 10px;
+  background: #000;
+}
+
+.post iframe {
+  height: 360px;
+}
+
+.postActions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 430px;
+  margin-top: 12px;
+  color: #71767b;
+}
+
+.postActions span {
+  cursor: pointer;
+}
+
+.postActions span:hover {
+  color: #1d9bf0;
+}
+
+.profileSection,
+.notificationsSection,
+.messagesSection,
+.exploreSection {
+  display: none;
+}
+
+.profileCover {
+  height: 160px;
+  background: #1d9bf0;
+}
+
+.profileInfo {
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.profileAvatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #000;
+  border: 4px solid #000;
+  color: white;
+  margin-top: -55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.changePhotoBtn {
+  display: inline-block;
+  margin-top: 12px;
+  background: white;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#profilePhotoInput {
+  display: none;
+}
+
+.profileInfo h2 {
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.profileStats {
+  display: flex;
+  gap: 18px;
+  margin-top: 12px;
+  color: #71767b;
+  flex-wrap: wrap;
+}
+
+.profileStats b {
+  color: white;
+}
+
+.notificationItem {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+  cursor: pointer;
+}
+
+.notificationItem.unread {
+  background: #06141f;
+}
+
+.notificationItem:hover {
+  background: #111;
+}
+
+.notificationIcon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.notificationText {
+  line-height: 1.4;
+}
+
+.notificationDate {
+  color: #71767b;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.messagesLayout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 500px;
+}
+
+.contactsBox {
+  border-right: 1px solid #2f3336;
+  padding: 15px;
+}
+
+.contactsBox h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.contactItem:hover {
+  background: #181818;
+}
+
+.contactName {
+  font-weight: bold;
+}
+
+.chatBox {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.chatHeader {
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+  font-weight: bold;
+}
+
+.chatMessages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.messageBubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.messageBubble.me {
+  background: #1d9bf0;
+  color: white;
+  margin-left: auto;
+}
+
+.messageBubble.other {
+  background: #202327;
+  color: white;
+}
+
+.messageMeta {
+  font-size: 12px;
+  color: #cfd9de;
+  margin-top: 4px;
+}
+
+.chatInputArea {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+  border-top: 1px solid #2f3336;
+}
+
+.chatInputArea input {
+  flex: 1;
+  background: #000;
+  color: white;
+  border: 1px solid #2f3336;
+  border-radius: 20px;
+  padding: 12px;
+  outline: none;
+}
+
+.chatInputArea button {
+  background: #1d9bf0;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.searchBox {
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.searchBox input {
+  width: 100%;
+  background: #202327;
+  color: white;
+  border: 1px solid #2f3336;
+  outline: none;
+  padding: 14px 18px;
+  border-radius: 28px;
+  font-size: 16px;
+}
+
+.searchBox input:focus {
+  border-color: #1d9bf0;
+}
+
+.userResult {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.userResult:hover {
+  background: #080808;
+}
+
+.userResultInfo {
+  flex: 1;
+  cursor: pointer;
+}
+
+.userResultName {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.userResultStats {
+  color: #71767b;
+  font-size: 14px;
+}
+
+.userResultActions {
+  display: flex;
+  gap: 8px;
+}
+
+.viewProfileBtn {
+  background: transparent;
+  color: white;
+  border: 1px solid #2f3336;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.viewProfileBtn:hover {
+  background: #181818;
+}
+
+.right {
+  padding: 20px;
+}
+
+.card {
+  background: #16181c;
+  padding: 15px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+}
+
+.card h3 {
+  margin-bottom: 12px;
+}
+
+.status {
+  margin-top: 10px;
+  color: #71767b;
+  font-size: 14px;
+}
+
+.trend {
+  padding: 10px 0;
+  border-bottom: 1px solid #2f3336;
+}
+
+.trend small {
+  color: #71767b;
+}
+
+@media(max-width: 900px) {
+  .app {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .right {
+    display: none;
+  }
+
+  .sidebar {
+    padding: 10px;
+  }
+
+  .navText {
+    display: none;
+  }
+
+  .navItem {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .notificationDot {
+    left: 38px;
+  }
+
+  .tweetBtn {
+    font-size: 0;
+  }
+
+  .tweetBtn::after {
+    content: "+";
+    font-size: 28px;
+  }
+
+  .logoutBtn {
+    font-size: 0;
+  }
+
+  .logoutBtn::after {
+    content: "↩";
+    font-size: 22px;
+  }
+}
+
+@media(max-width: 700px) {
+  .messagesLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .contactsBox {
+    border-right: none;
+    border-bottom: 1px solid #2f3336;
+  }
+
+  .userResult {
+    align-items: flex-start;
+  }
+
+  .userResultActions {
+    flex-direction: column;
+  }
+}
+
+@media(max-width: 600px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    border-right: none;
+  }
+
+  .post iframe {
+    height: 260px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="authScreen" class="authScreen">
+
+  <div id="authMenu" class="authBox">
+    <div class="authLogo">H</div>
+
+    <h1>Bem-vindo ao H</h1>
+    <p>Entre na sua conta ou crie uma nova para continuar.</p>
+
+    <button class="authBtn primary" onclick="abrirTelaLogin()">Entrar</button>
+    <button class="authBtn secondary" onclick="abrirTelaCriarConta()">Criar conta</button>
+
+    <div class="authStatus">Você precisa entrar para acessar o Início.</div>
+  </div>
+
+  <div id="loginBox" class="authBox" style="display:none;">
+    <div class="authLogo">H</div>
+
+    <h1>Entrar</h1>
+    <p>Digite seu nome de usuário e senha.</p>
+
+    <input class="authInput" id="loginUser" placeholder="Nome de usuário">
+    <input class="authInput" id="loginPass" placeholder="Senha" type="password">
+
+    <button class="authBtn primary" onclick="entrarAuth()">Entrar</button>
+    <button class="authBtn back" onclick="mostrarAuthMenu()">Voltar</button>
+
+    <div id="loginStatus" class="authStatus"></div>
+  </div>
+
+  <div id="registerBox" class="authBox" style="display:none;">
+    <div class="authLogo">H</div>
+
+    <h1>Criar conta</h1>
+    <p>Escolha um nome de usuário e uma senha.</p>
+
+    <input class="authInput" id="registerUser" placeholder="Nome de usuário">
+    <input class="authInput" id="registerPass" placeholder="Senha" type="password">
+
+    <button class="authBtn primary" onclick="criarContaAuth()">Criar conta</button>
+    <button class="authBtn back" onclick="mostrarAuthMenu()">Voltar</button>
+
+    <div id="registerStatus" class="authStatus"></div>
+  </div>
+
+</div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="logo">H</div>
+
+    <div class="navItem" onclick="abrirInicio()">🏠 <span class="navText">Início</span></div>
+    <div class="navItem" onclick="abrirExplorar()">🔍 <span class="navText">Explorar</span></div>
+
+    <div class="navItem" onclick="abrirNotificacoes()">
+      🔔
+      <span id="notificationDot" class="notificationDot"></span>
+      <span class="navText">Notificações</span>
+    </div>
+
+    <div class="navItem" onclick="abrirMensagens()">✉️ <span class="navText">Mensagens</span></div>
+    <div class="navItem" onclick="abrirPerfil()">👤 <span class="navText">Perfil</span></div>
+
+    <button class="tweetBtn" onclick="focarPost()">Postar</button>
+    <button class="logoutBtn" onclick="sair()">Sair</button>
+  </aside>
+
+  <main class="main">
+
+    <div class="top">
+      <h2 id="pageTitle">Início</h2>
+    </div>
+
+    <div id="postBox" class="postBox">
+      <div id="mainAvatar" class="avatar">U</div>
+
+      <div class="formArea">
+        <textarea id="text" placeholder="O que está acontecendo?"></textarea>
+
+        <label for="mediaFile" class="fileLabel">🖼️ Escolher foto/vídeo</label>
+        <input id="mediaFile" type="file" accept="image/*,video/*" onchange="previewFile()">
+
+        <div id="preview" class="previewBox"></div>
+
+        <div class="actions">
+          <div class="iconsPost">😊 📷 🎥</div>
+          <button onclick="postar(event)">Postar</button>
+        </div>
+      </div>
+    </div>
+
+    <section id="inicio">
+      <div class="sectionTitle">Posts publicados no Início</div>
+      <div id="feed"></div>
+    </section>
+
+    <section id="explorar" class="exploreSection">
+      <div class="sectionTitle">Pesquisar usuários</div>
+
+      <div class="searchBox">
+        <input id="searchUserInput" placeholder="Pesquisar pelo nome do usuário..." oninput="pesquisarUsuarios()">
+      </div>
+
+      <div id="searchResults"></div>
+    </section>
+
+    <section id="perfil" class="profileSection">
+      <div class="profileCover"></div>
+
+      <div class="profileInfo">
+        <div id="profileAvatar" class="profileAvatar">U</div>
+
+        <label for="profilePhotoInput" class="changePhotoBtn">Mudar foto</label>
+        <input id="profilePhotoInput" type="file" accept="image/*" onchange="mudarFotoPerfil()">
+
+        <h2 id="profileName">@usuario</h2>
+
+        <div class="profileStats">
+          <span><b id="profilePosts">0</b> posts</span>
+          <span><b id="profileFollowers">0</b> seguidores</span>
+          <span><b id="profileFollowing">0</b> seguindo</span>
+        </div>
+      </div>
+
+      <div class="sectionTitle">Publicações do perfil</div>
+      <div id="profileFeed"></div>
+    </section>
+
+    <section id="notificacoes" class="notificationsSection">
+      <div class="sectionTitle">Suas notificações</div>
+      <div id="notificationsFeed"></div>
+    </section>
+
+    <section id="mensagens" class="messagesSection">
+      <div class="sectionTitle">Mensagens</div>
+
+      <div class="messagesLayout">
+        <div class="contactsBox">
+          <h3>Conversas</h3>
+          <div id="messageContacts"></div>
+        </div>
+
+        <div class="chatBox">
+          <div id="chatHeader" class="chatHeader">Escolha alguém para conversar</div>
+          <div id="chatMessages" class="chatMessages"></div>
+
+          <div id="chatInputArea" class="chatInputArea" style="display:none;">
+            <input id="messageInput" placeholder="Digite sua mensagem">
+            <button onclick="enviarMensagem()">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="right">
+    <div class="card">
+      <h3>Perfil</h3>
+      <div id="rightStatus" class="status">Carregando usuário...</div>
+    </div>
+
+    <div class="card">
+      <h3>O que está acontecendo</h3>
+
+      <div class="trend">
+        <small>Assunto do momento</small>
+        <p>#GithubPages</p>
+      </div>
+
+      <div class="trend">
+        <small>Projeto</small>
+        <p>#AppsScript</p>
+      </div>
+
+      <div class="trend">
+        <small>Rede social</small>
+        <p>#H</p>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbxjwUIbIzieVsZfF-Sxr0M8RpeqPHWfZnYGZT70v7Tdla7viZphMMyNYRWFpQ3pIlC9qA/exec";
+
+let loggedUser = localStorage.getItem("loggedUser") || "";
+let loggedPhoto = localStorage.getItem("loggedPhoto") || "";
+let mediaBase64 = "";
+let mediaType = "";
+let selectedChatUser = "";
+let searchTimer = null;
+
+iniciarPagina();
+
+function iniciarPagina() {
+  if (loggedUser) {
+    esconderTelaLogin();
+  } else {
+    mostrarTelaLogin();
+  }
+
+  atualizarStatus();
+  loadPosts();
+  verificarNotificacoes();
+}
+
+function mostrarTelaLogin() {
+  document.getElementById("authScreen").style.display = "flex";
+  mostrarAuthMenu();
+}
+
+function esconderTelaLogin() {
+  document.getElementById("authScreen").style.display = "none";
+}
+
+function mostrarAuthMenu() {
+  document.getElementById("authMenu").style.display = "block";
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("registerBox").style.display = "none";
+}
+
+function abrirTelaLogin() {
+  document.getElementById("authMenu").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("registerBox").style.display = "none";
+
+  document.getElementById("loginStatus").textContent = "";
+  document.getElementById("loginUser").focus();
+}
+
+function abrirTelaCriarConta() {
+  document.getElementById("authMenu").style.display = "none";
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("registerBox").style.display = "block";
+
+  document.getElementById("registerStatus").textContent = "";
+  document.getElementById("registerUser").focus();
+}
+
+function avatarHTML(username, photo) {
+  if (photo) {
+    return `<img src="${photo}">`;
+  }
+
+  return escapeHTML(username || "U").charAt(0).toUpperCase();
+}
+
+function atualizarStatus() {
+  const name = loggedUser || "U";
+
+  document.getElementById("mainAvatar").innerHTML = avatarHTML(name, loggedPhoto);
+
+  const statusText = loggedUser
+    ? "Logado como @" + loggedUser
+    : "Você ainda não entrou.";
+
+  const rightStatus = document.getElementById("rightStatus");
+  if (rightStatus) rightStatus.textContent = statusText;
+}
+
+function mostrarInicio() {
+  document.getElementById("inicio").style.display = "block";
+  document.getElementById("explorar").style.display = "none";
+  document.getElementById("perfil").style.display = "none";
+  document.getElementById("notificacoes").style.display = "none";
+  document.getElementById("mensagens").style.display = "none";
+  document.getElementById("postBox").style.display = "flex";
+  document.getElementById("pageTitle").textContent = "Início";
+}
+
+function mostrarExplorar() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("explorar").style.display = "block";
+  document.getElementById("perfil").style.display = "none";
+  document.getElementById("notificacoes").style.display = "none";
+  document.getElementById("mensagens").style.display = "none";
+  document.getElementById("postBox").style.display = "none";
+  document.getElementById("pageTitle").textContent = "Explorar";
+}
+
+function mostrarPerfil() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("explorar").style.display = "none";
+  document.getElementById("perfil").style.display = "block";
+  document.getElementById("notificacoes").style.display = "none";
+  document.getElementById("mensagens").style.display = "none";
+  document.getElementById("postBox").style.display = "none";
+  document.getElementById("pageTitle").textContent = "Perfil";
+}
+
+function mostrarNotificacoes() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("explorar").style.display = "none";
+  document.getElementById("perfil").style.display = "none";
+  document.getElementById("notificacoes").style.display = "block";
+  document.getElementById("mensagens").style.display = "none";
+  document.getElementById("postBox").style.display = "none";
+  document.getElementById("pageTitle").textContent = "Notificações";
+}
+
+function mostrarMensagens() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("explorar").style.display = "none";
+  document.getElementById("perfil").style.display = "none";
+  document.getElementById("notificacoes").style.display = "none";
+  document.getElementById("mensagens").style.display = "block";
+  document.getElementById("postBox").style.display = "none";
+  document.getElementById("pageTitle").textContent = "Mensagens";
+}
+
+function mostrarPontoNotificacao() {
+  const dot = document.getElementById("notificationDot");
+  if (dot) dot.style.display = "block";
+}
+
+function esconderPontoNotificacao() {
+  const dot = document.getElementById("notificationDot");
+  if (dot) dot.style.display = "none";
+}
+
+async function verificarNotificacoes() {
+  if (!loggedUser) {
+    esconderPontoNotificacao();
+    return;
+  }
+
+  const res = await send({
+    action: "getNotifications",
+    username: loggedUser
+  });
+
+  if (res.status === "ok" && Number(res.unreadCount || 0) > 0) {
+    mostrarPontoNotificacao();
+  } else {
+    esconderPontoNotificacao();
+  }
+}
+
+function abrirInicio() {
+  mostrarInicio();
+
+  document.getElementById("inicio").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+async function abrirExplorar() {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  mostrarExplorar();
+
+  document.getElementById("searchUserInput").value = "";
+  document.getElementById("searchResults").innerHTML = `
+    <div class="post">
+      <div class="avatar">🔍</div>
+      <div class="postBody">
+        <span class="user">Pesquisar</span>
+        <div class="postText">Digite o nome de um usuário para procurar.</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("explorar").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function pesquisarUsuarios() {
+  clearTimeout(searchTimer);
+
+  searchTimer = setTimeout(function() {
+    pesquisarUsuariosAgora();
+  }, 300);
+}
+
+async function pesquisarUsuariosAgora() {
+  const query = document.getElementById("searchUserInput").value.trim();
+  const box = document.getElementById("searchResults");
+
+  box.innerHTML = `
+    <div class="post">
+      <div class="avatar">...</div>
+      <div class="postBody">
+        <div class="postText">Pesquisando...</div>
+      </div>
+    </div>
+  `;
+
+  const res = await send({
+    action: "searchUsers",
+    query: query,
+    currentUser: loggedUser
+  });
+
+  box.innerHTML = "";
+
+  if (res.status !== "ok") {
+    box.innerHTML = `
+      <div class="post">
+        <div class="avatar">!</div>
+        <div class="postBody">
+          <div class="postText">${escapeHTML(res.message)}</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (!res.users || res.users.length === 0) {
+    box.innerHTML = `
+      <div class="post">
+        <div class="avatar">🔍</div>
+        <div class="postBody">
+          <div class="postText">Nenhum usuário encontrado.</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  res.users.forEach(function(user) {
+    const div = document.createElement("div");
+    div.className = "userResult";
+
+    div.innerHTML = `
+      <div class="avatar">${avatarHTML(user.username, user.photo || "")}</div>
+
+      <div class="userResultInfo" onclick="abrirPerfilDeUsuario('${escapeJS(user.username)}')">
+        <div class="userResultName">@${escapeHTML(user.username)}</div>
+        <div class="userResultStats">
+          ${user.followers || 0} seguidores · ${user.following || 0} seguindo
+        </div>
+      </div>
+
+      <div class="userResultActions">
+        <button class="viewProfileBtn" onclick="abrirPerfilDeUsuario('${escapeJS(user.username)}')">
+          Ver perfil
+        </button>
+
+        <button class="followBtn ${user.isFollowing ? "following" : ""}" onclick="seguirPeloExplorar('${escapeJS(user.username)}')">
+          ${user.isFollowing ? "Seguindo" : "Seguir"}
+        </button>
+      </div>
+    `;
+
+    box.appendChild(div);
+  });
+}
+
+async function seguirPeloExplorar(username) {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  const res = await send({
+    action: "toggleFollow",
+    follower: loggedUser,
+    following: username
+  });
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  await pesquisarUsuariosAgora();
+  await loadPosts();
+}
+
+async function abrirNotificacoes() {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  mostrarNotificacoes();
+
+  const res = await send({
+    action: "getNotifications",
+    username: loggedUser
+  });
+
+  const box = document.getElementById("notificationsFeed");
+  box.innerHTML = "";
+
+  if (res.status !== "ok") {
+    box.innerHTML = `
+      <div class="notificationItem">
+        <div class="notificationIcon">⚠️</div>
+        <div class="notificationText">${escapeHTML(res.message)}</div>
+      </div>
+    `;
+    return;
+  }
+
+  if (!res.notifications || res.notifications.length === 0) {
+    box.innerHTML = `
+      <div class="notificationItem">
+        <div class="notificationIcon">🔔</div>
+        <div class="notificationText">Você ainda não tem notificações.</div>
+      </div>
+    `;
+  } else {
+    res.notifications.forEach(function(n) {
+      let icon = "🔔";
+
+      if (n.type === "like") icon = "❤️";
+      if (n.type === "follow") icon = "👤";
+      if (n.type === "comment") icon = "💬";
+      if (n.type === "message") icon = "✉️";
+
+      const div = document.createElement("div");
+      div.className = "notificationItem " + (!n.read ? "unread" : "");
+
+      div.innerHTML = `
+        <div class="notificationIcon">${icon}</div>
+
+        <div class="notificationText">
+          <b>@${escapeHTML(n.fromUser)}</b> ${escapeHTML(n.text)}
+          <div class="notificationDate">${formatDate(n.createdAt)}</div>
+        </div>
+      `;
+
+      div.onclick = function() {
+        abrirOrigemNotificacao(n);
+      };
+
+      box.appendChild(div);
+    });
+  }
+
+  await send({
+    action: "markNotificationsRead",
+    username: loggedUser
+  });
+
+  esconderPontoNotificacao();
+
+  document.getElementById("notificacoes").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+async function abrirOrigemNotificacao(n) {
+  if (!n) return;
+
+  if (n.type === "like" || n.type === "comment") {
+    await abrirPostDaNotificacao(n.postId);
+    return;
+  }
+
+  if (n.type === "follow") {
+    await abrirPerfilDeUsuario(n.fromUser);
+    return;
+  }
+
+  if (n.type === "message") {
+    await abrirMensagens();
+    await abrirConversa(n.fromUser);
+    return;
+  }
+}
+
+async function abrirPostDaNotificacao(postId) {
+  if (!postId) {
+    abrirInicio();
+    return;
+  }
+
+  mostrarInicio();
+
+  await loadPosts();
+
+  setTimeout(function() {
+    const post = document.getElementById("post-" + postId);
+
+    if (post) {
+      post.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      post.style.background = "#06141f";
+
+      setTimeout(function() {
+        post.style.background = "";
+      }, 2000);
+    } else {
+      alert("Publicação não encontrada no Início.");
+    }
+  }, 300);
+}
+
+async function abrirPerfilDeUsuario(username) {
+  if (!username) return;
+
+  mostrarPerfil();
+
+  const res = await send({
+    action: "getProfile",
+    username: username
+  });
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  const profile = res.profile;
+
+  document.getElementById("profileAvatar").innerHTML = avatarHTML(profile.username, profile.photo || "");
+  document.getElementById("profileName").textContent = "@" + profile.username;
+  document.getElementById("profilePosts").textContent = profile.postsCount;
+  document.getElementById("profileFollowers").textContent = profile.followers;
+  document.getElementById("profileFollowing").textContent = profile.following;
+
+  const changeBtn = document.querySelector(".changePhotoBtn");
+
+  if (changeBtn) {
+    changeBtn.style.display =
+      profile.username.toLowerCase() === loggedUser.toLowerCase()
+        ? "inline-block"
+        : "none";
+  }
+
+  const profileFeed = document.getElementById("profileFeed");
+  profileFeed.innerHTML = "";
+
+  if (!profile.posts || profile.posts.length === 0) {
+    profileFeed.innerHTML = `
+      <div class="post">
+        <div class="avatar">${avatarHTML(profile.username, profile.photo || "")}</div>
+        <div class="postBody">
+          <span class="user">${escapeHTML(profile.username)}</span>
+          <span class="nick">@${escapeHTML(profile.username)} · agora</span>
+          <div class="postText">Esse perfil ainda não publicou nada.</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  profile.posts.forEach(function(p) {
+    const div = document.createElement("div");
+    div.className = "post";
+    div.id = "post-" + p.id;
+
+    div.innerHTML = `
+      <div class="avatar">${avatarHTML(p.username || "U", p.profilePhoto || profile.photo || "")}</div>
+
+      <div class="postBody">
+        <div class="postHeader">
+          <div>
+            <span class="user">${escapeHTML(p.username || "Usuário")}</span>
+            <span class="nick">@${escapeHTML(p.username || "usuario")} · ${formatDate(p.createdAt)}</span>
+          </div>
+        </div>
+
+        <div class="postText">${escapeHTML(p.text || "")}</div>
+
+        ${renderMedia(p.media || "", p.mediaType || "")}
+
+        <div class="postActions">
+          <span onclick="comentar('${p.id}')">💬 ${p.commentsCount || 0}</span>
+          <span>🔁 0</span>
+          <span onclick="curtir('${p.id}')">❤️ ${p.likes || 0}</span>
+          <span>📤</span>
+        </div>
+      </div>
+    `;
+
+    profileFeed.appendChild(div);
+  });
+
+  document.getElementById("perfil").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+async function abrirMensagens() {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  mostrarMensagens();
+
+  selectedChatUser = "";
+
+  document.getElementById("chatHeader").textContent = "Escolha alguém para conversar";
+  document.getElementById("chatMessages").innerHTML = "";
+  document.getElementById("chatInputArea").style.display = "none";
+
+  const res = await send({
+    action: "getMessageContacts",
+    username: loggedUser
+  });
+
+  const box = document.getElementById("messageContacts");
+  box.innerHTML = "";
+
+  if (res.status !== "ok") {
+    box.innerHTML = `<p>${escapeHTML(res.message)}</p>`;
+    return;
+  }
+
+  if (!res.contacts || res.contacts.length === 0) {
+    box.innerHTML = `
+      <p style="color:#71767b;">
+        Nenhuma conversa ainda.
+      </p>
+    `;
+    return;
+  }
+
+  res.contacts.forEach(function(c) {
+    const div = document.createElement("div");
+    div.className = "contactItem";
+
+    div.innerHTML = `
+      <div class="avatar">${avatarHTML(c.username, c.photo || "")}</div>
+      <div class="contactName">@${escapeHTML(c.username)}</div>
+    `;
+
+    div.onclick = function() {
+      abrirConversa(c.username);
+    };
+
+    box.appendChild(div);
+  });
+
+  document.getElementById("mensagens").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+async function abrirConversa(username) {
+  selectedChatUser = username;
+
+  document.getElementById("chatHeader").textContent = "Conversa com @" + username;
+  document.getElementById("chatInputArea").style.display = "flex";
+
+  const res = await send({
+    action: "getConversation",
+    userA: loggedUser,
+    userB: selectedChatUser
+  });
+
+  const chat = document.getElementById("chatMessages");
+  chat.innerHTML = "";
+
+  if (res.status !== "ok") {
+    chat.innerHTML = `<p>${escapeHTML(res.message)}</p>`;
+    return;
+  }
+
+  if (!res.messages || res.messages.length === 0) {
+    chat.innerHTML = `
+      <p style="color:#71767b;">
+        Nenhuma mensagem ainda. Comece a conversa.
+      </p>
+    `;
+    return;
+  }
+
+  res.messages.forEach(function(m) {
+    const div = document.createElement("div");
+    const isMe = String(m.fromUser).toLowerCase() === loggedUser.toLowerCase();
+
+    div.className = "messageBubble " + (isMe ? "me" : "other");
+
+    div.innerHTML = `
+      <div>${escapeHTML(m.message)}</div>
+      <div class="messageMeta">${formatDate(m.createdAt)}</div>
+    `;
+
+    chat.appendChild(div);
+  });
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function enviarMensagem() {
+  if (!selectedChatUser) {
+    alert("Escolha alguém para conversar");
+    return;
+  }
+
+  const input = document.getElementById("messageInput");
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  const res = await send({
+    action: "sendMessage",
+    fromUser: loggedUser,
+    toUser: selectedChatUser,
+    message: message
+  });
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  input.value = "";
+
+  await abrirConversa(selectedChatUser);
+  verificarNotificacoes();
+}
+
+async function abrirPerfil() {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  const changeBtn = document.querySelector(".changePhotoBtn");
+
+  if (changeBtn) {
+    changeBtn.style.display = "inline-block";
+  }
+
+  await abrirPerfilDeUsuario(loggedUser);
+
+  const profileRes = await send({
+    action: "getProfile",
+    username: loggedUser
+  });
+
+  if (profileRes.status === "ok") {
+    loggedPhoto = profileRes.profile.photo || "";
+    localStorage.setItem("loggedPhoto", loggedPhoto);
+    atualizarStatus();
+  }
+}
+
+function focarPost() {
+  mostrarInicio();
+  document.getElementById("text").focus();
+}
+
+async function criarContaAuth() {
+  const username = document.getElementById("registerUser").value.trim();
+  const password = document.getElementById("registerPass").value.trim();
+
+  if (!username || !password) {
+    document.getElementById("registerStatus").textContent = "Preencha usuário e senha.";
+    return;
+  }
+
+  const res = await send({
+    action: "register",
+    username: username,
+    password: password
+  });
+
+  document.getElementById("registerStatus").textContent = res.message;
+
+  if (res.status === "ok") {
+    loggedUser = username;
+    loggedPhoto = "";
+
+    localStorage.setItem("loggedUser", loggedUser);
+    localStorage.setItem("loggedPhoto", loggedPhoto);
+
+    atualizarStatus();
+    esconderTelaLogin();
+    loadPosts();
+    verificarNotificacoes();
+  }
+}
+
+async function entrarAuth() {
+  const username = document.getElementById("loginUser").value.trim();
+  const password = document.getElementById("loginPass").value.trim();
+
+  if (!username || !password) {
+    document.getElementById("loginStatus").textContent = "Preencha usuário e senha.";
+    return;
+  }
+
+  const res = await send({
+    action: "login",
+    username: username,
+    password: password
+  });
+
+  document.getElementById("loginStatus").textContent = res.message;
+
+  if (res.status === "ok") {
+    loggedUser = res.user.username;
+    localStorage.setItem("loggedUser", loggedUser);
+
+    const profileRes = await send({
+      action: "getProfile",
+      username: loggedUser
+    });
+
+    if (profileRes.status === "ok") {
+      loggedPhoto = profileRes.profile.photo || "";
+      localStorage.setItem("loggedPhoto", loggedPhoto);
+    }
+
+    atualizarStatus();
+    esconderTelaLogin();
+    loadPosts();
+    verificarNotificacoes();
+  }
+}
+
+function sair() {
+  localStorage.removeItem("loggedUser");
+  localStorage.removeItem("loggedPhoto");
+  loggedUser = "";
+  loggedPhoto = "";
+  selectedChatUser = "";
+  atualizarStatus();
+  esconderPontoNotificacao();
+  mostrarTelaLogin();
+}
+
+function previewFile() {
+  const file = document.getElementById("mediaFile").files[0];
+  const preview = document.getElementById("preview");
+
+  if (!file) {
+    mediaBase64 = "";
+    mediaType = "";
+    preview.innerHTML = "";
+    return;
+  }
+
+  mediaType = file.type;
+
+  const maxSize = 1024 * 1024 * 20;
+
+  if (file.size > maxSize) {
+    alert("Arquivo muito grande. Escolha um arquivo menor que 20MB.");
+    document.getElementById("mediaFile").value = "";
+    mediaBase64 = "";
+    mediaType = "";
+    preview.innerHTML = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    mediaBase64 = e.target.result;
+
+    if (mediaType.startsWith("image/")) {
+      preview.innerHTML = `<img src="${mediaBase64}">`;
+    } else if (mediaType.startsWith("video/")) {
+      preview.innerHTML = `<video controls src="${mediaBase64}"></video>`;
+    }
+  };
+
+  reader.readAsDataURL(file);
+}
+
+async function mudarFotoPerfil() {
+  const input = document.getElementById("profilePhotoInput");
+  const file = input.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Escolha uma imagem válida");
+    return;
+  }
+
+  const maxSize = 1024 * 1024 * 5;
+
+  if (file.size > maxSize) {
+    alert("Imagem muito grande. Escolha uma imagem menor que 5MB.");
+    input.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = async function(e) {
+    const photoBase64 = e.target.result;
+
+    const res = await send({
+      action: "updateProfilePhoto",
+      username: loggedUser,
+      photo: photoBase64,
+      photoType: file.type
+    });
+
+    if (res.status !== "ok") {
+      alert(res.message);
+      return;
+    }
+
+    loggedPhoto = res.photo || "";
+    localStorage.setItem("loggedPhoto", loggedPhoto);
+
+    alert("Foto atualizada!");
+
+    await abrirPerfil();
+    await loadPosts();
+  };
+
+  reader.readAsDataURL(file);
+}
+
+async function postar(event) {
+  const text = document.getElementById("text").value.trim();
+
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  if (!text && !mediaBase64) {
+    alert("Escreva algo ou escolha uma foto/vídeo");
+    return;
+  }
+
+  const botao = event.target;
+  botao.disabled = true;
+  botao.textContent = "Postando...";
+
+  const res = await send({
+    action: "post",
+    username: loggedUser,
+    text: text,
+    media: mediaBase64,
+    mediaType: mediaType
+  });
+
+  botao.disabled = false;
+  botao.textContent = "Postar";
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  document.getElementById("text").value = "";
+  document.getElementById("mediaFile").value = "";
+  document.getElementById("preview").innerHTML = "";
+
+  mediaBase64 = "";
+  mediaType = "";
+
+  await loadPosts();
+  abrirInicio();
+}
+
+async function loadPosts() {
+  const res = await send({
+    action: "getPosts",
+    currentUser: loggedUser
+  });
+
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "";
+
+  if (!res.posts || res.posts.length === 0) {
+    feed.innerHTML = `
+      <div class="post">
+        <div class="avatar">H</div>
+        <div class="postBody">
+          <span class="user">Sistema</span>
+          <span class="nick">@sistema · agora</span>
+          <div class="postText">Nenhum post ainda. Seja o primeiro a postar no Início.</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  res.posts.forEach(function(p) {
+    const div = document.createElement("div");
+    div.className = "post";
+    div.id = "post-" + p.id;
+
+    const postUsername = String(p.username || "");
+    const isMe = loggedUser.toLowerCase() === postUsername.toLowerCase();
+
+    const followButton = isMe ? "" : `
+      <button class="followBtn ${p.isFollowing ? "following" : ""}" onclick="toggleFollow('${escapeJS(postUsername)}')">
+        ${p.isFollowing ? "Seguindo" : "Seguir"}
+      </button>
+    `;
+
+    div.innerHTML = `
+      <div class="avatar">${avatarHTML(postUsername || "U", p.profilePhoto || "")}</div>
+
+      <div class="postBody">
+        <div class="postHeader">
+          <div>
+            <span class="user">${escapeHTML(postUsername || "Usuário")}</span>
+            <span class="nick">@${escapeHTML(postUsername || "usuario")} · ${formatDate(p.createdAt)}</span>
+          </div>
+
+          ${followButton}
+        </div>
+
+        <div class="postText">${escapeHTML(p.text || "")}</div>
+
+        ${renderMedia(p.media || "", p.mediaType || "")}
+
+        <div class="postActions">
+          <span onclick="comentar('${p.id}')">💬 ${p.commentsCount || 0}</span>
+          <span>🔁 0</span>
+          <span onclick="curtir('${p.id}')">❤️ ${p.likes || 0}</span>
+          <span>📤</span>
+        </div>
+      </div>
+    `;
+
+    feed.appendChild(div);
+  });
+}
+
+function renderMedia(media, type) {
+  if (!media) return "";
+
+  if (type.startsWith("video/")) {
+    return `
+      <iframe 
+        src="${media}"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    `;
+  }
+
+  if (type.startsWith("image/")) {
+    return `<img src="${media}">`;
+  }
+
+  return "";
+}
+
+async function toggleFollow(username) {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  const res = await send({
+    action: "toggleFollow",
+    follower: loggedUser,
+    following: username
+  });
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  await loadPosts();
+
+  if (document.getElementById("perfil").style.display === "block") {
+    await abrirPerfil();
+  }
+}
+
+async function curtir(id) {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  const res = await send({
+    action: "like",
+    id: id,
+    username: loggedUser
+  });
+
+  if (res.status === "ok") {
+    await loadPosts();
+
+    if (document.getElementById("perfil").style.display === "block") {
+      await abrirPerfil();
+    }
+
+    verificarNotificacoes();
+  } else {
+    alert(res.message);
+  }
+}
+
+async function comentar(postId) {
+  if (!loggedUser) {
+    mostrarTelaLogin();
+    return;
+  }
+
+  const comentario = prompt("Digite seu comentário:");
+
+  if (!comentario || !comentario.trim()) {
+    return;
+  }
+
+  const res = await send({
+    action: "comment",
+    postId: postId,
+    username: loggedUser,
+    comment: comentario.trim()
+  });
+
+  if (res.status !== "ok") {
+    alert(res.message);
+    return;
+  }
+
+  alert("Comentário enviado!");
+
+  await loadPosts();
+
+  if (document.getElementById("perfil").style.display === "block") {
+    await abrirPerfil();
+  }
+
+  verificarNotificacoes();
+}
+
+async function send(data) {
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    return await res.json();
+
+  } catch (erro) {
+    return {
+      status: "error",
+      message: "Erro ao conectar com o Apps Script. Confira o link /exec."
+    };
+  }
+}
+
+function escapeHTML(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function escapeJS(text) {
+  return String(text)
+    .replaceAll("\\", "\\\\")
+    .replaceAll("'", "\\'")
+    .replaceAll('"', '\\"');
+}
+
+function formatDate(dateText) {
+  if (!dateText) return "agora";
+
+  const date = new Date(dateText);
+
+  if (isNaN(date.getTime())) {
+    return "agora";
+  }
+
+  return date.toLocaleDateString("pt-BR") + " " + date.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+setInterval(verificarNotificacoes, 15000);
+</script>
+
+</body>
+</html>
